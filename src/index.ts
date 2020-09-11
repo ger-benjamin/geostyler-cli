@@ -50,7 +50,8 @@ const getParserFromFilename = (fileName: string): StyleParser => {
   if (!fileName) {
     return undefined;
   }
-  const fileEnding = fileName.split('.')[1];
+  const fileNameSplitted = fileName.split('.');
+  const fileEnding = fileNameSplitted[fileNameSplitted.length - 1];
   switch (fileEnding.toLowerCase()) {
     // case 'ol':
     //   return new OpenLayersParser();
@@ -214,7 +215,7 @@ async function main() {
 
   // Get source and target parser.
   const sourceParser = getParserFromFormat(sourceFormat)
-  || (sourceIsFile && getParserFromFilename(sourcePath));
+    || sourceIsFile ? getParserFromFilename(sourcePath) : null;
   const targetParser = getParserFromFormat(targetFormat) || getParserFromFilename(outputPath);
   if (!sourceParser) {
     indicator.fail('No sourceparser was specified.');
